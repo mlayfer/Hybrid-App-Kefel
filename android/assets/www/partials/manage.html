@@ -1,0 +1,747 @@
+<div>
+    <header class="navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="row header">
+                <div class="container-fluid">
+                    <img id="iconRefresh" src="images/refresh-icon.png" ng-click="refreshTable('manage')">
+                    <img id="iconMenu" href="#myModal3" src="images/menuIcon.png" data-toggle="modal" data-target="#myModal3">
+                    <img id="iconInfo" src="images/menu-icon.png" ng-click="alertMess(5)">
+                    <div class="col-xs-12 text-center">
+                        <h4><span>מערכת התפעול - ניהול</span></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="myModal3" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">תפריט</h4>
+                </div>
+                <div ng-if="stat!='manage'" class="modal-body">
+                    <center>
+                        <button ng-show="userLevel > 1" ng-click="goToManage()" type="button" class="btn btn-primary">ניהול</button><br />
+                        <button ng-click="goToActionLog()" type="button" class="btn btn-primary">מעקב פעולות</button><br />
+                        <button ng-click="goToErrorLog()" type="button" class="btn btn-primary">מעקב תקלות</button><br />
+                        <button ng-show="userLevel > 0" ng-click="goToDohot()" type="button" class="btn btn-primary">דו"חות</button>
+                    </center>
+                </div>
+                <div class="modal-footer">
+                    <center><button ng-click="goToMain()" type="button" class="btn btn-primary">חזרה לדף הראשי</button></center>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container" id="manageMenu">
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <button ng-click="user=true; notif=false; permisson=false; error=false; program=false; jobs=false;
+                                M_user=true; M_notif=false; M_permission=false; M_job=false; M_program=false; M_error=false;" type="button" class="btn btn-primary">ניהול משתמשים</button><br/>
+                            <button ng-click="program=true; notif=false; permisson=false; error=false; jobs=false; user=false;
+                                M_user=false; M_notif=false; M_permission=false; M_job=false; M_program=true; M_error=false;" type="button" class="btn btn-primary">ניהול תוכניות</button><br />
+                            <button ng-click="error=true; notif=false; permisson=false; program=false; jobs=false; user=false;
+                                M_user=false; M_notif=false; M_permission=false; M_job=false; M_program=false; M_error=true;" type="button" class="btn btn-primary">ניהול תקלות</button><br/></td>
+                        <td><button ng-click="permisson=true; notif=false; error=false; program=false; jobs=false; user=false;
+                                M_user=false; M_notif=false; M_permission=true; M_job=false; M_program=false; M_error=false;" type="button" class="btn btn-primary">ניהול הרשאות</button><br />
+                            <button ng-click="jobs=true; notif=false; permisson=false; error=false; program=false; user=false;
+                                M_user=false; M_notif=false; M_permission=false; M_job=true; M_program=false; M_error=false;" type="button" class="btn btn-primary">ניהול תהליכים</button><br/>
+                            <button ng-click="notif=true; permisson=false; error=false; program=false; jobs=false; user=false;
+                                M_user=false; M_notif=true; M_permission=false; M_job=false; M_program=false; M_error=false;" type="button" class="btn btn-primary">ניהול התראות</button><br />
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <div ng-show="user" class="secManageMenu">
+                    <table>
+                        <tr>
+                            <td><button ng-click="user_add=true; user_update=false; user_delete=false;" type="button" class="btn btn-info">הוספת משתמש</button><br/></td>
+                            <td><button ng-click="user_update=true; user_add=false; user_delete=false;" type="button" class="btn btn-info">עדכון משתמש</button><br/></td>
+                            <td><button ng-click="user_delete=true; user_update=false; user_add=false;" type="button" class="btn btn-info">מחיקת משתמש</button><br/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show="permisson" class="secManageMenu">
+                    <table>
+                        <tr>
+                            <td><button ng-click="permission_add=true; permission_update=false; permission_delete=false;" type="button" class="btn btn-info">הוספת הרשאה</button><br/></td>
+                            <td><button ng-click="permission_update=true; permission_add=false; permission_delete=false;" type="button" class="btn btn-info">עדכון הרשאה</button><br/></td>
+                            <td><button ng-click="permission_delete=true; permission_update=false; permission_add=false;" type="button" class="btn btn-info">מחיקת הרשאה</button><br/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show="program" class="secManageMenu">
+                    <table>
+                        <tr>
+                            <td><button ng-click="program_add=true; program_update=false; program_delete=false;" type="button" class="btn btn-info">הוספת תוכנית</button><br/></td>
+                            <td><button ng-click="program_update=true; program_add=false; program_delete=false;" type="button" class="btn btn-info">עדכון תוכנית</button><br/></td>
+                            <td><button ng-click="program_delete=true; program_update=false; program_add=false;" type="button" class="btn btn-info">מחיקת תוכנית</button><br/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show="jobs" class="secManageMenu">
+                    <table>
+                        <tr>
+                            <td><button ng-click="job_add=true; job_update=false; job_delete=false;" type="button" class="btn btn-info">הוספת תהליך</button><br /></td>
+                            <td><button ng-click="job_update=true; job_add=false; job_delete=false;" type="button" class="btn btn-info">עדכון תהליך</button><br /></td>
+                            <td><button ng-click="job_delete=true; job_update=false; job_add=false;" type="button" class="btn btn-info">מחיקת תהליך</button><br /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show="error" class="secManageMenu">
+                    <table>
+                        <tr>
+                            <td><button ng-click="IssueStats_add=true; IssueStats_update=false; IssueStats_delete=false;" type="button" class="btn btn-info">הוספת תקלה</button><br /></td>
+                            <td><button ng-click="IssueStats_update=true; IssueStats_add=false; IssueStats_add=false;" type="button" class="btn btn-info">עדכון תקלה</button><br /></td>
+                            <td><button ng-click="IssueStats_delete=true; IssueStats_update=false; IssueStats_add=false;" type="button" class="btn btn-info">מחיקת תקלה</button><br /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show="notif" class="secManageMenu">
+                    <table>
+                        <tr>
+                            <td><button ng-click="notif_add=true; notif_update=false; notif_delete=false;" type="button" class="btn btn-info">הוספת התראה</button><br /></td>
+                            <td><button ng-click="notif_update=true; notif_add=false; notif_delete=false;" type="button" class="btn btn-info">עדכון התראה</button><br /></td>
+                            <td><button ng-click="notif_delete=true; notif_update=false; notif_add=false;" type="button" class="btn btn-info">מחיקת התראה</button><br /></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Users forms -->
+                <div ng-show="M_user">
+                <div ng-show="user_add" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>מספר זהות:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="id" ng-bind="user_id" ng-model="user_id"></td>
+                        </tr>
+                        <tr>
+                            <td>שם פרטי:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="f_name" ng-bind="user_fname" ng-model="user_fname"></td>
+                        </tr>
+                        <tr>
+                            <td>שם משפחה:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="l_name" ng-bind="user_lname" ng-model="user_lname"></td>
+                        </tr>
+                        <tr>
+                            <td>דוא"ל:</td>
+                            <td style="padding-right: 15px;"><input type="email" name="email" ng-bind="user_email" ng-model="user_email"></td>
+                        </tr>
+                        <tr>
+                            <td>סיסמא:</td>
+                            <td style="padding-right: 15px;"><input type="password" name="pass" ng-bind="user_pass" ng-model="user_pass"></td>
+                        </tr>
+                        <tr>
+                            <td>טלפון:</td>
+                            <td style="padding-right: 15px;"><input type="tel" name="phone" ng-bind="user_phone" ng-model="user_phone"></td>
+                        </tr>
+                        <tr>
+                            <td>הרשאה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="user_type">
+                                    <option name="user_type" value="0">משתמש רגיל</option>
+                                    <option name="user_type" value="1">מנהל</option>
+                                    <option name="user_type" value="2">מנהל ראשי</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table><center>
+                    <button ng-click="addUser(user_id,user_fname,user_lname,user_email,user_pass,user_phone,user_type,'1')"
+                            type="button" class="btn btn-success" style="position: initial;">הוספה
+                    </button></center>
+                </div>
+                <div ng-show="user_update" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>מספר זהות:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-click="user_update_gen=true; showUserUpdateData(user_id)" ng-model="user_id">
+                                    <option ng-repeat="option in usersTable" name="user_id" value="{{option.user_id}}">{{option.user_id}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr ng-show="user_update_gen">
+                            <td>שם פרטי:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="f_name" ng-bind="user_fname" ng-model="user_fname"></td>
+                        </tr>
+                        <tr ng-show="user_update_gen">
+                            <td>שם משפחה:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="l_name" ng-bind="user_lname" ng-model="user_lname"></td>
+                        </tr>
+                        <tr ng-show="user_update_gen">
+                            <td>דוא"ל:</td>
+                            <td style="padding-right: 15px;"><input type="email" name="email" ng-bind="user_email" ng-model="user_email"></td>
+                        </tr>
+                        <tr ng-show="user_update_gen">
+                            <td>סיסמא:</td>
+                            <td style="padding-right: 15px;"><input type="password" name="pass" ng-bind="user_pass" ng-model="user_pass"></td>
+                        </tr>
+                        <tr ng-show="user_update_gen">
+                            <td>טלפון:</td>
+                            <td style="padding-right: 15px;"><input type="tel" name="phone" ng-bind="user_phone" ng-model="user_phone"></td>
+                        </tr>
+                        <tr ng-show="user_update_gen">
+                            <td>הרשאה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="user_type">
+                                    <option name="user_type" value="0">משתמש רגיל</option>
+                                    <option name="user_type" value="1">מנהל</option>
+                                    <option name="user_type" value="2">מנהל ראשי</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                        <center>
+                            <button ng-show="user_update_gen" ng-click="updateUser(user_id,user_fname,user_lname,user_email,user_pass,user_phone,user_type,'1')"
+                            type="button" class="btn btn-success" style="position: initial;">
+                        עדכון
+                            </button>
+                        </center>
+                </div>
+                <div ng-show="user_delete" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>מספר זהות:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="user_id">
+                                    <option ng-repeat="option in usersTable" name="user_id" value="{{option.user_id}}">{{option.user_id}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <center>
+                    <button ng-click="deleteUser(user_id)"
+                            type="button" class="btn btn-success" style="position: initial;">
+                        מחיקה
+                    </button>
+                        </center>
+                    <br />
+                </div>
+                </div>
+                <!-- Notifications forms -->
+                <div ng-show="M_notif">
+                <div ng-show="notif_add" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>זהות משתמש:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="user_id">
+                                    <option ng-repeat="option in usersTable" name="user_id" value="{{option.user_id}}">{{option.user_id}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סוג תקלה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="issue_type_id">
+                                    <option ng-repeat="option in issueTypesTable" name="issue_type_id" value="{{option.issue_type_id}}">{{option.issue_type_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>התראה ב-SMS:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="sms_enabled">
+                                    <option name="sms_enabled" value="1">כן</option>
+                                    <option name="sms_enabled" value="0">לא</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>התראה במייל:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="mail_enabled">
+                                    <option name="mail_enabled" value="1">כן</option>
+                                    <option name="mail_enabled" value="0">לא</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table><br><center>
+                    <button ng-click="addNotification(user_id,issue_type_id,sms_enabled,mail_enabled,'1')"
+                            type="button" class="btn btn-success" style="position: initial;">הוספה
+                    </button></center><br/>
+                </div>
+                <div ng-show="notif_update" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>זהות משתמש:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="user_id" ng-click="showNotificationUpdateData(user_id,issue_type_id)">
+                                    <option ng-repeat="option in usersTable" name="user_id" value="{{option.user_id}}">{{option.user_id}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סוג תקלה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="issue_type_id" ng-click="showNotificationUpdateData(user_id,issue_type_id)">
+                                    <option ng-repeat="option in issueTypesTable" name="issue_type_id" value="{{option.issue_type_id}}">{{option.issue_type_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>התראה ב-SMS:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="sms_enabled">
+                                    <option name="sms_enabled" value="1">כן</option>
+                                    <option name="sms_enabled" value="0">לא</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>התראה במייל:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="mail_enabled">
+                                    <option name="mail_enabled" value="1">כן</option>
+                                    <option name="mail_enabled" value="0">לא</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br><center>
+                    <button ng-show="user_update_gen" ng-click="updateNotification(user_id,issue_type_id,sms_enabled,mail_enabled,'1')"
+                            type="button" class="btn btn-success" style="position: initial;">
+                        עדכון
+                    </button></center>
+                    <br />
+                </div>
+                <div ng-show="notif_delete" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>זהות משתמש:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="user_id" ng-click="showNotificationUpdateData(user_id,issue_type_id)">
+                                    <option ng-repeat="option in usersTable" name="user_id" value="{{option.user_id}}">{{option.user_id}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סוג תקלה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="issue_type_id" ng-click="showNotificationUpdateData(user_id,issue_type_id)">
+                                    <option ng-repeat="option in issueTypesTable" name="issue_type_id" value="{{option.issue_type_id}}">{{option.issue_type_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br><center>
+                    <button ng-click="deleteNotification(user_id,issue_type_id)"
+                            type="button" class="btn btn-success" style="position: initial;">
+                        מחיקה
+                    </button></center>
+                    <br />
+                </div>
+                </div>
+                <!-- Permissions forms -->
+                <div ng-show="M_permission">
+                    <div ng-show="permission_add" class="manageForm">
+                        <table>
+                            <tr>
+                                <td>זהות משתמש:</td>
+                                <td style="padding-right: 15px;">
+                                    <select ng-model="user_id">
+                                        <option ng-repeat="option in usersTable" name="user_id" value="{{option.user_id}}">{{option.user_id}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>סוג פעולה:</td>
+                                <td style="padding-right: 15px;">
+                                    <select ng-model="action_type_id">
+                                        <option ng-repeat="option in actionTypesTable" name="action_type_id" value="{{option.action_type_id}}">{{option.action_type_name}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>הרשאה:</td>
+                                <td style="padding-right: 15px;">
+                                    <select ng-model="is_permitted">
+                                        <option name="is_permitted" value="1">כן</option>
+                                        <option name="is_permitted" value="0">לא</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <br><center>
+                        <button ng-click="addPermission(user_id,action_type_id,is_permitted,'1')"
+                                type="button" class="btn btn-success" style="position: initial;">
+                            הוספה
+                        </button></center>
+                        <br />
+                    </div>
+                    <div ng-show="permission_update" class="manageForm">
+                        <table>
+                            <tr>
+                                <td>זהות משתמש:</td>
+                                <td style="padding-right: 15px;">
+                                    <select ng-click="showPermissionUpdateData(user_id,action_type_id)" ng-model="user_id">
+                                        <option ng-repeat="option in usersTable" name="user_id" value="{{option.user_id}}">{{option.user_id}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>סוג פעולה:</td>
+                                <td style="padding-right: 15px;">
+                                    <select ng-click="showPermissionUpdateData(user_id,action_type_id)" ng-model="action_type_id">
+                                        <option ng-repeat="option in actionTypesTable" name="action_type_id" value="{{option.action_type_id}}">{{option.action_type_name}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>הרשאה:</td>
+                                <td style="padding-right: 15px;">
+                                    <select ng-model="is_permitted">
+                                        <option name="is_permitted" value="1">כן</option>
+                                        <option name="is_permitted" value="0">לא</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <br><center>
+                        <button ng-click="updatePermission(user_id,action_type_id,is_permitted,'1')"
+                                type="button" class="btn btn-success" style="position: initial;">
+                            עדכון
+                        </button></center>
+                        <br />
+                    </div>
+                    <div ng-show="permission_delete" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>זהות משתמש:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="user_id">
+                                    <option ng-repeat="option in usersTable" name="user_id" value="{{option.user_id}}">{{option.user_id}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סוג פעולה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="action_type_id">
+                                    <option ng-repeat="option in actionTypesTable" name="action_type_id" value="{{option.action_type_id}}">{{option.action_type_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br><center>
+                    <button ng-click="deletePermission(user_id,action_type_id)" type="button" class="btn btn-success" style="position: initial;">מחיקה</button></center>
+                    <br />
+                </div>
+                </div>
+                <!-- Jobs forms -->
+                <div ng-show="M_job">
+                    <div ng-show="job_add" class="manageForm">
+                        <table>
+                            <tr>
+                                <td>שם התוכנית:</td>
+                                <td style="padding-right: 15px;">
+                                    <select ng-model="program_id">
+                                        <option ng-repeat="option in programsTable" name="program_id" value="{{option.program_id}}">{{option.program_name}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>מספר זהות:</td>
+                                <td style="padding-right: 15px;"><input type="text" name="job_id" ng-bind="job_id" ng-model="job_id"></td>
+                            </tr>
+                            <tr>
+                                <td>שם:</td>
+                                <td style="padding-right: 15px;"><input type="text" name="job_name" ng-bind="job_name" ng-model="job_name"></td>
+                            </tr>
+                            <tr>
+                                <td>תיאור:</td>
+                                <td style="padding-right: 15px;"><input type="text" name="job_desc" ng-bind="job_desc" ng-model="job_desc"></td>
+                            </tr>
+                            <tr>
+                                <td>סוג:</td>
+                                <td style="padding-right: 15px;">
+                                <select ng-model="job_type">
+                                    <option ng-repeat="option in jobTypesTable" name="job_type" value="{{option.job_type_id}}">{{option.job_type_name}}</option>
+                                </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>רמת חשיבות:</td>
+                                <td style="padding-right: 15px;"><input type="number" name="job_prio" ng-bind="job_prio" ng-model="job_prio"></td>
+                            </tr>
+                        </table>
+                        <br><center>
+                        <button ng-click="notif!=notif; addJob(program_id,job_id,job_name,job_desc,job_type,job_prio,'1')"
+                                type="button" class="btn btn-success" style="position: initial;">
+                            הוספה
+                        </button></center>
+                        <br />
+                    </div>
+                    <div ng-show="job_update" class="manageForm">
+                        <table>
+                            <tr>
+                                <td>שם התוכנית:</td>
+                                <td style="padding-right: 15px;">
+                                    <select ng-model="program_id" ng-click="showJobUpdateData(program_id,job_id)">
+                                        <option ng-repeat="option in programsTable" name="program_id" value="{{option.program_id}}">{{option.program_name}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>מספר זהות:</td>
+                                <td style="padding-right: 15px;">
+                                    <select ng-model="job_id" ng-click="showJobUpdateData(program_id,job_id)">
+                                        <option ng-repeat="option in jobsTable" name="job_id" value="{{option.job_id}}">{{option.job_id}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>שם:</td>
+                                <td style="padding-right: 15px;"><input type="text" name="job_name" ng-bind="job_name" ng-model="job_name"></td>
+                            </tr>
+                            <tr>
+                                <td>תיאור:</td>
+                                <td style="padding-right: 15px;"><input type="text" name="job_desc" ng-bind="job_desc" ng-model="job_desc"></td>
+                            </tr>
+                            <td>סוג:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="job_type">
+                                    <option ng-repeat="option in jobTypesTable" name="job_type" value="{{option.job_type_id}}">{{option.job_type_name}}</option>
+                                </select>
+                            </td>
+                            <tr>
+                                <td>רמת חשיבות:</td>
+                                <td style="padding-right: 15px;"><input placeholder="מספר בין 1 ל-10" type="text" name="job_prio" ng-bind="job_prio" ng-model="job_prio"></td>
+                            </tr>
+                        </table>
+                        <br><center>
+                        <button ng-click="notif!=notif; updateJob(program_id,job_id,job_name,job_desc,job_type,job_prio,'1')"
+                                type="button" class="btn btn-success" style="position: initial;">
+                            עדכון
+                        </button></center>
+                        <br />
+                    </div>
+                    <div ng-show="job_delete" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>שם התוכנית:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="program_id">
+                                    <option ng-repeat="option in programsTable" name="program_id" value="{{option.program_id}}">{{option.program_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>מספר זהות:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="job_id">
+                                    <option ng-repeat="option in jobsTable" name="job_id" value="{{option.job_id}}">{{option.job_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br><center>
+                    <button ng-click="notif!=notif; deleteJob(program_id,job_id)"type="button" class="btn btn-success" style="position: initial;">מחיקה</button>
+                </center>
+                    <br />
+                </div>
+                </div>
+                <!-- Programs forms -->
+                <div ng-show="M_program">
+                <div ng-show="program_add" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>מספר זהות:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="program_id" ng-bind="program_id" ng-model="program_id"></td>
+                        </tr>
+                        <tr>
+                            <td>שם:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="program_name" ng-bind="program_name" ng-model="program_name"></td>
+                        </tr>
+                        <tr>
+                            <td>תיאור:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="program_desc" ng-bind="program_desc" ng-model="program_desc"></td>
+                        </tr>
+                    </table><br><center>
+                    <button ng-click="notif!=notif; addProgram(program_id,program_name,program_desc,'1')" type="button" class="btn btn-success" style="position: initial;">הוספה</button></center><br />
+                </div>
+                <div ng-show="program_update" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>מספר זהות:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-click="program_update_gen=true; showProgramUpdateData(program_id)" ng-model="program_id">
+                                    <option ng-repeat="option in programsTable" name="program_id" value="{{option.program_id}}">{{option.program_id}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr ng-show="program_update_gen">
+                            <td>שם:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="program_name" ng-bind="program_name" ng-model="program_name"></td>
+                        </tr>
+                        <tr ng-show="program_update_gen">
+                            <td>תיאור:</td>
+                            <td style="padding-right: 15px;"><input type="text" name="program_desc" ng-bind="program_desc" ng-model="program_desc"></td>
+                    </table>
+                    <br><center>
+                    <button ng-show="program_update_gen" ng-click="updateProgram(program_id,program_name,program_desc,'1')" type="button" class="btn btn-success" style="position: initial;">עדכון</button>
+                    </center><br />
+                </div>
+                <div ng-show="program_delete" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>מספר זהות:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="program_id">
+                                    <option ng-repeat="option in programsTable" name="program_id" value="{{option.program_id}}">{{option.program_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br><center>
+                    <button ng-click="deleteProgram(program_id)" type="button" class="btn btn-success" style="position: initial;">מחיקה</button>
+                    </center><br />
+                </div>
+                </div>
+                <!-- Errors forms -->
+                <div ng-show="M_error">
+                <div ng-show="IssueStats_add" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>שם התוכנית:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="program_id">
+                                    <option ng-repeat="option in programsTable" name="program_id" value="{{option.program_id}}">{{option.program_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>שם התהליך:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="job_id">
+                                    <option ng-repeat="option in jobsTable" name="job_id" value="{{option.job_id}}">{{option.job_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סביבה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="env_id">
+                                    <option ng-repeat="option in EnvTable" name="env_id" value="{{option.env_id}}">{{option.env_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סוג תקלה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="issue_type_id">
+                                    <option ng-repeat="option in issueTypesTable" name="issue_type_id" value="{{option.issue_type_id}}">{{option.issue_type_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table><br><center>
+                    <button ng-click="addError(program_id,job_id,env_id,issue_type_id,'1')" type="button" class="btn btn-success" style="position: initial;">הוספה</button><br />
+                </center></div>
+                <div ng-show="IssueStats_update" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>שם התוכנית:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="program_id" ng-click="showErrorUpdateData(program_id,job_id,env_id)">
+                                    <option ng-repeat="option in programsTable" name="program_id" value="{{option.program_id}}">{{option.program_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>שם התהליך:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="job_id" ng-click="showErrorUpdateData(program_id,job_id,env_id)">
+                                    <option ng-repeat="option in jobsTable" name="job_id" value="{{option.job_id}}">{{option.job_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סביבה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="env_id" ng-click="showErrorUpdateData(program_id,job_id,env_id)">
+                                    <option ng-repeat="option in EnvTable" name="env_id" value="{{option.env_id}}">{{option.env_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סוג תקלה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="issue_type_id">
+                                    <option ng-repeat="option in issueTypesTable" name="issue_type_id" value="{{option.issue_type_id}}">{{option.issue_type_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table><br><center>
+                    <button ng-click="updateError(program_id,job_id,env_id,issue_type_id,'1')" type="button" class="btn btn-success" style="position: initial;">עדכון</button><br />
+                </center></div>
+                <div ng-show="IssueStats_delete" class="manageForm">
+                    <table>
+                        <tr>
+                            <td>שם התוכנית:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="program_id">
+                                    <option ng-repeat="option in programsTable" name="program_id" value="{{option.program_id}}">{{option.program_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>שם התהליך:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="job_id">
+                                    <option ng-repeat="option in jobsTable" name="job_id" value="{{option.job_id}}">{{option.job_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>סביבה:</td>
+                            <td style="padding-right: 15px;">
+                                <select ng-model="env_id">
+                                    <option ng-repeat="option in EnvTable" name="env_id" value="{{option.env_id}}">{{option.env_name}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                    <br><center>
+                    <button ng-click="deleteError(program_id,job_id,env_id)" type="button" class="btn btn-success" style="position: initial;">מחיקה</button>
+                    </center><br />
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="col-xs-12 text-center">
+                        <h4>
+                            <div ng-click="alertMess(2)" id="indication1">מסר&nbsp;<span ng-bind="messageNum"></span>&nbsp;
+                            </div>
+                            <div ng-click="alertMess(3)" id="indication2">{{isAramisTakin!="לא מופעל" ?"תקין":"לא תקין"}}
+                            </div>
+                            <div ng-click="alertMess(6)" id="indication3">{{isC2223Takin!="לא מופעל" ?"תקין":"לא תקין"}}
+                            </div>
+                            <div ng-click="alertMess(1)" id="indication4"><span ng-bind="percent"></span>%</div>
+                            <img ng-click="alertMess(2)" id="icon1"
+                                 ng-src="{{isAramisTakin2 != 'לא מופעל' && 'images/aramisGreen.png' || 'images/aramisRed.png'}}"/>
+                            <img ng-click="alertMess(3)" id="icon2"
+                                 ng-src="{{isAramisTakin != 'לא מופעל' && 'images/heartGreen.png' || 'images/heartRed.png'}}"/>
+                            <img ng-click="alertMess(6)" id="icon3"
+                                 ng-src="{{isC2223Takin != 'לא מופעל' && 'images/c3233Green.png' || 'images/c3233Red.png'}}"/>
+                            <img ng-click="alertMess(1)" id="icon4"
+                                 ng-src="{{isPercentTakin != 'לא מופעל' && 'images/floppyGreen.png' || 'images/floppyRed.png'}}"/>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="aramisCon"></div>
+        <div class="c32Con"></div>
+        <div class="discCon"></div>
+    </footer>
+</div>

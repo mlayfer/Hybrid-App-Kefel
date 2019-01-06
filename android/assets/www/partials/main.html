@@ -1,0 +1,120 @@
+<div onload="onLoad()">
+    <header class="navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="row header">
+                <div class="container-fluid">
+                    <img src="images/closeBtn.png" style="height: 31px;position: fixed;right: 3px;top: 5px;"
+                         ng-click="goToSplash()">
+                    <!--<img src="images/sound.png" style="height: 27px;position: fixed;right: 36px;top: 7px;" onclick="document.getElementById('bg').muted=!document.getElementById('bg').muted">-->
+                    <img ng-show="mutedbtn == '0'" src="images/sound.png"
+                         style="height: 27px;position: fixed;right: 36px;top: 7px;" ng-click="mute()">
+                    <img ng-show="mutedbtn == '1'" src="images/sound.png"
+                         style="height: 27px;position: fixed;right: 36px;top: 7px;" ng-click="unMute()">
+
+<!--                    <img class="puzIcon" src="images/puzIcon.png">
+                    <span class="puzIconLabel" ng-bind="currentPoints"></span>-->
+                    <button ng-click="showAdd() ; goToMain()" class="btn-danger"
+                            style="position: absolute; top: 6px; left: -24px; padding: 4px;">
+                        משחק חדש
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:700' rel='stylesheet' type='text/css'>
+
+    <section class="content">
+        <div class="bg-container">
+            <div class="blue-background"></div>
+        </div>
+        <div class="clearfix"></div>
+    </section>
+    <div class="row">
+        <div class="container">
+            <table class="table table-hover">
+                <thead class="tableTitle">
+                </thead>
+                <tbody>
+                <img ng-show="winner == 1" class="winnerPic" src="images/winnerFireworks.gif">
+
+                <div>
+                    <tr>
+                        <p ng-show="winner == 0" id="demo"></p>
+
+                        <img class="currentPic" ng-show="isRight == false && winner == 0" src="images/wrong.png"
+                             height="100%" width="100%">
+
+                        <img class="currentPic" ng-show="currentPic == 'cat' && winner == 0"
+                             src="images/cat/cat.png" height="100%" width="100%">
+                        <img class="currentPic" ng-show="currentPic == 'elephant' && winner == 0"
+                             src="images/elephant/elephant.png" height="100%" width="100%">
+                        <img class="currentPic" ng-show="currentPic == 'girrafe' && winner == 0"
+                             src="images/girrafe/girrafe.png" height="100%" width="100%">
+                        <img class="currentPic" ng-show="currentPic == 'lion' && winner == 0"
+                             src="images/lion/lion.png" height="100%" width="100%">
+                        <img class="currentPic" ng-show="currentPic == 'horse' && winner == 0"
+                             src="images/horse/horse.png" height="100%" width="100%">
+                        <img class="currentPic" ng-show="currentPic == 'rabbit' && winner == 0"
+                             src="images/rabbit/rabbit.png" height="100%" width="100%">
+
+                        <img class="currentPic" onload="" ng-show="isRight == true && winner == 0"
+                             src="images/right.png" height="100%" width="100%">
+
+                        <br><br>
+
+                        <div ng-show="winner == 0"
+                             style="float: left; z-index: 9999; position: relative;right: -243px;">
+                            <div class="targil"> = {{random2}} {{action}} {{random1}}</div>
+                            <br>
+                            <span class="answerText" ng-click="checkAnswer(randAnswer1)"
+                                  onclick="document.getElementById('blop').play()">{{randAnswer1}}</span>
+                            <span class="answerText" ng-click="checkAnswer(randAnswer2)"
+                                  onclick="document.getElementById('blop').play()">{{randAnswer2}}</span>
+                            <span class="answerText" ng-click="checkAnswer(randAnswer3)"
+                                  onclick="document.getElementById('blop').play()">{{randAnswer3}}</span>
+                        </div>
+                    </tr>
+                </div>
+                <tr>
+
+                    <table class="kefelBoard">
+                        <tr>
+                            <td class="up3">{{up3}}</td>
+                            <td class="up2">{{up2}}</td>
+                            <td class="up1">{{up1}}</td>
+                            <td class="nothing"></td>
+                        </tr>
+                        <tr>
+                            <td style="background-size: 100% 100%;" class="pz3">{{ans3}}</td>
+                            <td style="background-size: 100% 100%;" class="pz2">{{ans2}}</td>
+                            <td style="background-size: 100% 100%;" class="pz1">{{ans1}}</td>
+                            <td class="down1">{{down1}}</td>
+                        </tr>
+                        <tr>
+                            <td style="background-size: 100% 100%;" class="pz6">{{ans6}}</td>
+                            <td style="background-size: 100% 100%;" class="pz5">{{ans5}}</td>
+                            <td style="background-size: 100% 100%;" class="pz4">{{ans4}}</td>
+                            <td class="down2">{{down2}}</td>
+                        </tr>
+                        <tr>
+                            <td style="background-size: 100% 100%;" class="pz9">{{ans9}}</td>
+                            <td style="background-size: 100% 100%;" class="pz8">{{ans8}}</td>
+                            <td style="background-size: 100% 100%;" class="pz7">{{ans7}}</td>
+                            <td class="down3">{{down3}}</td>
+                        </tr>
+                    </table>
+                </tr>
+            </table>
+        </div>
+        </tr>
+        </center>
+    </div>
+    </tbody>
+    </table>
+</div>
+</div>
+
+<footer>
+</footer>
+</div>

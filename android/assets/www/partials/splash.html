@@ -1,0 +1,34 @@
+<div>
+    <header class="navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="row header">
+                <div class="container-fluid">
+                    <img src="images/closeBtn.png" style="height: 31px;position: fixed;right: 3px;top: 5px;" ng-click="back($event)">
+                    <img ng-show="mutedbtn == '0'" src="images/sound.png" style="height: 27px;position: fixed;right: 36px;top: 7px;" ng-click="mute()">
+                    <img ng-show="mutedbtn == '1'" src="images/sound.png" style="height: 27px;position: fixed;right: 36px;top: 7px;" ng-click="unMute()">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="content">
+        <div class="bg-container">
+            <div class="blue-background">
+                <span class="playBtnLabel">נהנים כפליים</span>
+                <span class="playBtnLabel2">עם לוח הכפל</span>
+                <img src="images/play2.png" style="height: 93px;position: fixed;right: 43%;top: 45%;" ng-click="showAdd() ; goToMain()">
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </section>
+
+    <footer>
+        <img src="images/board.png" style="height: 116px;position: fixed;bottom: 4px;left: 6px;">
+        <a href="https://play.google.com/store/apps/details?id=com.maayan.kidsmath">
+            <img src="images/icon10Fingers.png" style="height: 45px; position: fixed; bottom: 25px; left: 74px;">
+            <div style="height: 45px; position: fixed; bottom: -17px; left: 64px; line-height: 0.5; text-align: center; font-size: 9px; color: white;">
+                <label>חיבור וחיסור</label><br><label>בעשר אצבעות</label>
+            </div>
+        </a>
+    </footer>
+</div>
